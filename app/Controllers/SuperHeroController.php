@@ -4,34 +4,45 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\SuperHero;
+require_once APPPATH . 'Libraries/dompdf/dompdf/autoload.inc.php';
+
 use Dompdf\Dompdf;
+
 
 class SuperHeroController extends BaseController
 {
+
     public function index()
     {
         $model = new SuperHero();
-
         $termino = $this->request->getGet('q');
 
         if ($termino) {
-            $data['heroes'] = $model->buscar($termino);
+            $heroes = $this->buscar($termino, $model);
         } else {
-            $data['heroes'] = $model->findAll();
+            $heroes = $model->findAll();
         }
 
-        $data['termino'] = $termino;
-        $data['header'] = view('Layouts/header'); 
+        $data = [
+            'heroes' => $heroes,
+            'header' => view('admin/dashboard'), 
+        ];
 
-        return view('Buscador/buscador1', $data);
+        return view('Buscador/index', $data);
     }
 
-     public function exportPdf()
+
+    public function exportPdf()
     {
         $model = new SuperHero();
-        $heroes = $model->findAll();
+        $termino = $this->request->getGet('q');
 
-        // Vista que tendrá el contenido del PDF
+        if ($termino) {
+            $heroes = $this->buscar($termino, $model);
+        } else {
+            $heroes = $model->findAll();
+        }
+
         $html = view('Buscador/pdf_template', ['heroes' => $heroes]);
 
         $dompdf = new Dompdf();
@@ -39,7 +50,26 @@ class SuperHeroController extends BaseController
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
-        // Descargar PDF
-        return $dompdf->stream("superheroes.pdf", ["Attachment" => true]);
+        return $dompdf->stream("superheroes.pdf", ["Attachment" => false]); 
+        // Attachment false → abre en navegador
+    }
+
+    //  Método privado para reutilizar la búsqueda
+    private function buscar($termino, $model)
+    {
+        // si es número exacto → buscar por ID
+        if (is_numeric($termino)) {
+            return $model->asArray()
+                ->where('id', (int)$termino)
+                ->findAll();
+        }
+
+        // si es texto → buscar por nombre o full_name
+        return $model->asArray()
+            ->groupStart()
+                ->like('superhero_name', $termino)
+                ->orLike('full_name', $termino)
+            ->groupEnd()
+            ->findAll();
     }
 }
