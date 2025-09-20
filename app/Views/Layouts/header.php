@@ -23,7 +23,7 @@
           <a class="nav-link" href="<?= base_url('buscador'); ?>">Primer Buscador</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="<?= base_url('subcategorias'); ?>">Segundo Buscador</a>
+          <a class="nav-link" href="<?= base_url('buscador2'); ?>">Segundo Buscador</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="<?= base_url('recursos'); ?>">Tercer Buscador </a>

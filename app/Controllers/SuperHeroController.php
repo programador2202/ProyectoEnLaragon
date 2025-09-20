@@ -25,10 +25,10 @@ class SuperHeroController extends BaseController
 
         $data = [
             'heroes' => $heroes,
-            'header' => view('admin/dashboard'), 
+            'header' => view('Layouts/header'), 
         ];
 
-        return view('Buscador/index', $data);
+        return view('Buscador/buscador1', $data);
     }
 
 
@@ -66,9 +66,9 @@ class SuperHeroController extends BaseController
 
         // si es texto → buscar por nombre o full_name
         return $model->asArray()
-            ->groupStart()
-                ->like('superhero_name', $termino)
-                ->orLike('full_name', $termino)
+            ->groupStart() //esto agrupa la informacion
+                ->like('superhero_name', $termino) //trae el nombre 
+                ->orLike('full_name', $termino) //trae el subnombre
             ->groupEnd()
             ->findAll();
     }
