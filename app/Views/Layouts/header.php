@@ -26,7 +26,7 @@
           <a class="nav-link" href="<?= base_url('buscador2'); ?>">Segundo Buscador</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="<?= base_url('recursos'); ?>">Tercer Buscador </a>
+          <a class="nav-link" href="<?= base_url('buscador3'); ?>">Tercer Buscador </a>
         </li>
       
       </ul>

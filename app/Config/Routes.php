@@ -12,3 +12,6 @@ $routes->get('superheroes/exportPdf', 'SuperHeroController::exportPdf');
 
 $routes->get('buscador2', 'HeroAtributeController::index');
 $routes->get('HeroAtribute/exportpdf', 'HeroAtributeController::exportPdf');
+
+$routes->get('buscador3', 'PowerController::index');
+$routes->get('power/exportPdf', 'PowerController::exportPdf');
